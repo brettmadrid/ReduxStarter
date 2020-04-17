@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 
-const DragonList = () => {
+import { connect } from "react-redux";
+import { updateMemberList } from "../actions/titleActions";
+
+const DragonList = (props) => {
   const [newMember, setNewMember] = useState("");
-  const [members, setMembers] = useState([
-    { name: "Ethan Madrid", dragonStatus: true },
-    { name: "Brett Madrid", dragonStatus: false },
-  ]);
 
   const handleChanges = (e) => {
     setNewMember(e.target.value);
   };
 
+  const updateMember = (e) => {
+    props.updateMemberList(newMember);
+    setNewMember("");
+  };
+
   return (
     <React.Fragment>
       <div className="friends-list">
-        {members.map((member, index) => (
+        {props.members.map((member, index) => (
           <h4 key={index}>
             {member.name}
             {member.dragonStatus && <i className="fas fa-dragon" />}
@@ -26,10 +30,16 @@ const DragonList = () => {
           onChange={handleChanges}
           placeholder="Add new member"
         />
-        <button>Add member</button>
+        <button onClick={() => updateMember()}>Add member</button>
       </div>
     </React.Fragment>
   );
 };
 
-export default DragonList;
+const mstp = (state) => {
+  return {
+    members: state.members,
+  };
+};
+
+export default connect(mstp, { updateMemberList })(DragonList);
