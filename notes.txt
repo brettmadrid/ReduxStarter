@@ -1,0 +1,54 @@
+1. import redux and react-redux
+2. create a store in index.js
+
+    import { createStore } from 'redux'
+
+    const store = createStore(reducerFile)
+
+3. Set up reducerFile in index.js
+
+    import { reducerFile } from './path'
+
+4. in the reducerFile set default state:
+
+    (state = initialState, action)
+
+5. set up Provider in index.js
+
+    import { Provider } from 'react-redux'
+
+    wrap App in provider and pass in store={store}
+
+    <Provider store={store}>
+        <App />
+    </Provider>
+
+6. in components that need access to state, use connect:
+
+    import { connect } from 'react-redux'
+
+    set up mapStateToProps function:
+
+        const mapStateToProps = state => {
+            return {
+                stateValue1: state.stateValue1,
+                etc.
+            }  
+        }
+
+    at bottom of file wrap component export in connect function:
+
+    export default connect(mapStateToProps, {})(componentName) // func currying
+
+7. Set up actions. In new folder called 'actions' set up an action file.
+    In this file create functions that describe various actions to state
+    name export each action function
+    import named action function into top of component that needs it
+    also put the action function at the bottom of the connect export
+
+// workflow:
+// connect component to store if needed
+// if event needs to update state:
+//   - create action creator an an action
+//   - import action creator and pass into connect
+//   - build a case in the reducer file for that action

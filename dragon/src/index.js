@@ -9,7 +9,7 @@ import "./index.css";
 import App from "./App";
 
 const store = createStore(titleReducer);
-
+console.log("store state", store.getState());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

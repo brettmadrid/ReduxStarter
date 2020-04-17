@@ -1,12 +1,11 @@
-import React, { useState, useReducer } from "react";
-
-import { initialState, titleReducer } from "../reducers/titleReducer";
-
+import React, { useState } from "react";
 // STEP II - connect the component to the redux store
+import { connect } from "react-redux";
+import { toggleEditing, updateTitle } from "../actions/titleActions";
 
 const Title = (props) => {
   const [newTitleText, setNewTitleText] = useState("");
-  const [state, dispatch] = useReducer(titleReducer, initialState);
+  //   const [state, dispatch] = useReducer(titleReducer, initialState);
 
   const handleChanges = (e) => {
     setNewTitleText(e.target.value);
@@ -14,13 +13,10 @@ const Title = (props) => {
 
   return (
     <div>
-      {!state.editingOnProps ? (
+      {!props.editing ? (
         <h1>
-          {state.title}{" "}
-          <i
-            onClick={() => dispatch({ type: "TOGGLE_EDITING" })}
-            className="far fa-edit"
-          />
+          {props.title}{" "}
+          <i onClick={props.toggleEditing} className="far fa-edit" />
         </h1>
       ) : (
         <div>
@@ -31,11 +27,7 @@ const Title = (props) => {
             value={newTitleText}
             onChange={handleChanges}
           />
-          <button
-            onClick={() =>
-              dispatch({ type: "UPDATE_TITLE", payload: newTitleText })
-            }
-          >
+          <button onClick={() => props.updateTitle(newTitleText)}>
             Update title
           </button>
         </div>
@@ -44,4 +36,9 @@ const Title = (props) => {
   );
 };
 
-export default Title;
+export default connect(
+  (state) => {
+    return { title: state.title, editing: state.editing };
+  },
+  { toggleEditing, updateTitle }
+)(Title);

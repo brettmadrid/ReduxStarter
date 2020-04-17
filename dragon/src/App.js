@@ -14,3 +14,10 @@ function App() {
 }
 
 export default App;
+
+// workflow:
+// connect component to store if needed
+// if event needs to update state:
+//   - create action creator an an action
+//   - import action creator and pass into connect
+//   - build a case in the reducer file for that action
